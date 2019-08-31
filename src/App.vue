@@ -9,38 +9,16 @@
     />
     <transition-group tag="div" name="list-group">
       <transition-group tag="div" name="list-group" class="list" key="list-tg">
-        <div
-          class="list__item list-item"
+        <TodoItem
+          class="list__item"
+          :todo="item"
+          :index="index"
           v-for="(item, index) in shownTodos"
           :key="item.id"
-        >
-          <input
-            class="list-item__check"
-            type="checkbox"
-            v-model="item.completed"
-          />
-          <div
-            class="list-item__name"
-            :class="{ 'list-item__name--completed': item.completed }"
-            v-if="!item.editable"
-            @click="editTodo(item)"
-          >
-            {{ item.title }}
-          </div>
-          <input
-            class="list-item__editor"
-            type="text"
-            v-model="item.title"
-            v-else
-            @keydown.enter="doneEdit(item)"
-            @blur="doneEdit(item)"
-            @keydown.esc="cancelEdit(item)"
-            v-focus
-          />
-          <div class="list-item__remove" @click="removeTodo(index)">
-            &times;
-          </div>
-        </div>
+          @removeTodo="removeTodo"
+          @renameTodo="renameTodo"
+          @checkTodo="checkTodo"
+        />
       </transition-group>
       <div class="list-bottom" key="bottom-top">
         <label class="list-bottom__label">
@@ -96,36 +74,28 @@
 </template>
 
 <script>
+import TodoItem from "@/components/TodoItem";
 export default {
   name: "App",
+  components: { TodoItem },
   data: () => ({
-    nextId: 2,
+    nextId: 0,
     newTodo: "",
-    titleCache: "",
     isAllChecked: false,
     filter: 0,
     todos: [
       {
         id: 0,
         title: "Какое-то задание",
-        completed: false,
-        editable: false
+        completed: false
       },
       {
         id: 1,
         title: "Еще одно задание",
-        completed: false,
-        editable: false
+        completed: false
       }
     ]
   }),
-  directives: {
-    focus: {
-      inserted(el) {
-        el.focus();
-      }
-    }
-  },
   computed: {
     shownTodos() {
       switch (this.filter) {
@@ -170,8 +140,7 @@ export default {
         this.todos.push({
           id: this.nextId,
           title: this.newTodo,
-          completed: false,
-          editable: false
+          completed: false
         });
         this.newTodo = "";
         this.nextId++;
@@ -180,25 +149,18 @@ export default {
     removeTodo(index) {
       this.todos.splice(index, 1);
     },
-    editTodo(todo) {
-      this.titleCache = todo.title;
-      todo.editable = true;
+    renameTodo({ index, title }) {
+      this.todos[index].title = title;
     },
-    doneEdit(todo) {
-      if (!todo.title) {
-        this.cancelEdit(todo);
-      } else {
-        todo.editable = false;
-      }
-    },
-    cancelEdit(todo) {
-      todo.editable = false;
-      todo.title = this.titleCache;
-      this.titleCache = "";
+    checkTodo({ index, completed }) {
+      this.todos[index].completed = completed;
     },
     removeCompleted() {
       this.todos = this.todos.filter(item => !item.completed);
     }
+  },
+  created() {
+    this.nextId = this.todos.length;
   }
 };
 </script>

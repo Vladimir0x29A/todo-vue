@@ -1,0 +1,32 @@
+.list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &__name {
+    margin-right: auto;
+    cursor: pointer;
+
+    &--completed {
+      color: #cacaca;
+      text-decoration: line-through;
+    }
+  }
+
+  &__editor {
+    align-self: stretch;
+    flex-grow: 1;
+    border: 1px solid #bfbfbf;
+    border-radius: 2px;
+    padding: 0 3px;
+    margin-left: -4px;
+    font-size: inherit;
+  }
+
+  &__remove {
+    margin-left: 8px;
+    margin-bottom: -2px;
+    font-size: 24px;
+    cursor: pointer;
+  }
+}

@@ -19,7 +19,7 @@ button {
 .container {
   display: flex;
   flex-direction: column;
-  max-width: 900px;
+  max-width: 600px;
   padding: 40px;
   margin: 0 auto;
 }
@@ -31,6 +31,7 @@ button {
   margin-bottom: 10px;
   font-size: inherit;
   color: #4d4d4d;
+  outline: none;
 }
 
 .list {
@@ -54,38 +55,6 @@ button {
 
   &__check {
     margin-right: 8px;
-  }
-}
-
-.list-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  &__name {
-    margin-right: auto;
-    cursor: pointer;
-
-    &--completed {
-      color: #cacaca;
-      text-decoration: line-through;
-    }
-  }
-
-  &__editor {
-    align-self: stretch;
-    flex-grow: 1;
-    border: 1px solid #bfbfbf;
-    border-radius: 5px;
-    padding: 6px;
-    font-size: inherit;
-  }
-
-  &__remove {
-    margin-left: 8px;
-    margin-bottom: -2px;
-    font-size: 24px;
-    cursor: pointer;
   }
 }
 
