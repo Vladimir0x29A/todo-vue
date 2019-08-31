@@ -1,0 +1,175 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: sans-serif;
+  line-height: 1;
+}
+
+input {
+  margin: 0;
+}
+
+button {
+  font-size: inherit;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  max-width: 900px;
+  padding: 40px;
+  margin: 0 auto;
+}
+
+.add {
+  border: 1px solid #bfbfbf;
+  border-radius: 5px;
+  padding: 6px 10px;
+  margin-bottom: 10px;
+  font-size: inherit;
+  color: #4d4d4d;
+}
+
+.list {
+  $margin: 10px;
+
+  position: relative;
+  margin-top: (-$margin);
+  margin-bottom: 10px;
+
+  &__item {
+    //margin-top: $margin;
+    padding-top: $margin;
+  }
+}
+
+.list-item,
+.list-bottom {
+  padding-left: 11px;
+  padding-right: 11px;
+  user-select: none;
+
+  &__check {
+    margin-right: 8px;
+  }
+}
+
+.list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &__name {
+    margin-right: auto;
+    cursor: pointer;
+
+    &--completed {
+      color: #cacaca;
+      text-decoration: line-through;
+    }
+  }
+
+  &__editor {
+    align-self: stretch;
+    flex-grow: 1;
+    border: 1px solid #bfbfbf;
+    border-radius: 5px;
+    padding: 6px;
+    font-size: inherit;
+  }
+
+  &__remove {
+    margin-left: 8px;
+    margin-bottom: -2px;
+    font-size: 24px;
+    cursor: pointer;
+  }
+}
+
+.list-bottom {
+  display: flex;
+  align-items: center;
+  min-height: 30px;
+  border-top: 1px solid black;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-size: 14px;
+  font-style: italic;
+
+  &__stream-el {
+    &:not(:first-child) {
+      margin-left: 10px;
+    }
+  }
+
+  &__label {
+    display: flex;
+    align-items: center;
+    margin-right: auto;
+    cursor: pointer;
+  }
+
+  &__bold {
+    font-weight: 700;
+  }
+
+  &__button {
+    //align-self: stretch;
+    border: 1px solid #b3b3b3;
+    padding: 2px 7px;
+    //border-radius: 5px;
+    background: linear-gradient(to top, #0026e6, white);
+    color: white;
+    cursor: pointer;
+    outline: none;
+
+    &--active {
+      color: black;
+      background: linear-gradient(to top, #00e600, white);
+    }
+
+    &--clear {
+      margin-left: auto;
+      color: black;
+      background: linear-gradient(to top, #e69500, white);
+    }
+  }
+}
+
+
+.fade {
+  &-leave,
+  &-enter {
+    &-active {
+      transition: opacity .2s;
+    }
+  }
+
+  &-enter,
+  &-leave-to {
+    opacity: 0;
+  }
+}
+
+.list-group {
+  &-leave-active,
+  &-enter-active,
+  &-move {
+    transition: none .2s;
+    transition-property: opacity, transform;
+  }
+
+  &-leave-active {
+    position: absolute;
+    width: 100%;
+  }
+
+  &-enter,
+  &-leave-to {
+    opacity: 0;
+    transform: translateY(-50%);
+  }
+}
