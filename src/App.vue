@@ -15,9 +15,6 @@
           :index="index"
           v-for="(item, index) in shownTodos"
           :key="item.id"
-          @removeTodo="removeTodo"
-          @renameTodo="renameTodo"
-          @checkTodo="checkTodo"
         />
       </transition-group>
       <div class="list-bottom" key="bottom-top">
@@ -74,6 +71,7 @@
 </template>
 
 <script>
+import { mapState, mapGetters } from "vuex";
 import TodoItem from "@/components/TodoItem";
 export default {
   name: "App",
@@ -82,21 +80,11 @@ export default {
     nextId: 0,
     newTodo: "",
     isAllChecked: false,
-    filter: 0,
-    todos: [
-      {
-        id: 0,
-        title: "Какое-то задание",
-        completed: false
-      },
-      {
-        id: 1,
-        title: "Еще одно задание",
-        completed: false
-      }
-    ]
+    filter: 0
   }),
   computed: {
+    ...mapState(["todos"]),
+    ...mapGetters(["total", "remaining"]),
     shownTodos() {
       switch (this.filter) {
         case 0:
@@ -106,12 +94,6 @@ export default {
         case 2:
           return this.todos.filter(item => item.completed);
       }
-    },
-    total() {
-      return this.todos.length;
-    },
-    remaining() {
-      return this.todos.filter(item => !item.completed).length;
     }
   },
   watch: {
@@ -122,8 +104,8 @@ export default {
         this.isAllChecked = true;
       }
     },
-    total() {
-      if (this.remaining || !this.total) {
+    total(val) {
+      if (this.remaining || !val) {
         this.isAllChecked = false;
       }
     }
@@ -131,32 +113,20 @@ export default {
   methods: {
     checkAll() {
       this.isAllChecked = !this.isAllChecked;
-      this.todos.forEach(item => {
-        item.completed = this.isAllChecked;
-      });
+      this.$store.commit("checkAll", this.isAllChecked);
     },
     addTodo() {
       if (this.newTodo) {
-        this.todos.push({
+        this.$store.commit("addTodo", {
           id: this.nextId,
-          title: this.newTodo,
-          completed: false
+          title: this.newTodo
         });
         this.newTodo = "";
         this.nextId++;
       }
     },
-    removeTodo(index) {
-      this.todos.splice(index, 1);
-    },
-    renameTodo({ index, title }) {
-      this.todos[index].title = title;
-    },
-    checkTodo({ index, completed }) {
-      this.todos[index].completed = completed;
-    },
     removeCompleted() {
-      this.todos = this.todos.filter(item => !item.completed);
+      this.$store.commit("removeCompleted");
     }
   },
   created() {

@@ -58,13 +58,13 @@ export default {
   },
   methods: {
     check() {
-      this.$emit("checkTodo", {
+      this.$store.commit("checkTodo", {
         index: this.index,
         completed: !this.todo.completed
       });
     },
     removeTodo() {
-      this.$emit("removeTodo", this.index);
+      this.$store.commit("removeTodo", this.index);
     },
     editTodo() {
       this.titleCache = this.todo.title;
@@ -72,7 +72,7 @@ export default {
     },
     doneEdit() {
       if (this.titleCache && this.titleCache !== this.todo.title) {
-        this.$emit("renameTodo", {
+        this.$store.commit("renameTodo", {
           index: this.index,
           title: this.titleCache
         });
