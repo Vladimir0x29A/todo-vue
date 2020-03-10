@@ -5,18 +5,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    todos: [
-      {
-        id: 0,
-        title: "Какое-то задание",
-        completed: false
-      },
-      {
-        id: 1,
-        title: "Еще одно задание",
-        completed: false
-      }
-    ]
+    todos: [],
   },
   getters: {
     total(state) {
@@ -27,6 +16,9 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    initTodo(state, payload) {
+      state.todos = payload;
+    },
     addTodo(state, { id, title }) {
       state.todos.push({
         id,
@@ -52,5 +44,24 @@ export default new Vuex.Store({
       });
     }
   },
-  actions: {}
+  actions: {
+    fetchTodos({commit}) {
+      return new Promise((resolve, reject) => {
+        axios.get('http://todo-api/todos')
+          .then(response => {
+            commit('initTodo', response.data);
+            resolve(response);
+          });
+      });
+    },
+    fetchAddingTodo({commit}) {
+      return new Promise((resolve, reject) => {
+        axios.post('http://todo-api/add-todo')
+          .then(response => {
+            // commit('addTodo', response.data);
+            // resolve(response);
+          });
+      });
+    },
+  }
 });
